@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+##Secure  Cassandra Bundle##
+src/main/resources/secure-connect.zip

@@ -1,14 +1,76 @@
 package com.saurav.JobService.service.impl;
 
 import com.saurav.JobService.dto.JobDto;
+import com.saurav.JobService.entity.Job;
+import com.saurav.JobService.exception.ResourceNotFoundException;
+import com.saurav.JobService.repository.JobRepository;
 import com.saurav.JobService.service.JobService;
-import org.springframework.context.annotation.Primary;
+import com.saurav.JobService.util.Mapper;
 import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.util.UUID;
 
 @Service
 public class JobServiceImpl implements JobService {
-    @Override
-    public JobDto createJob() {
-        return new JobDto();
+    private final JobRepository jobRepository;  // Assuming you have a repository to interact with Cassandra
+    // Constructor
+    public JobServiceImpl(JobRepository jobRepository) {
+        this.jobRepository = jobRepository;
     }
+    // Method to create a new job
+    public JobDto createJob(String userId, JobDto jobDto) {
+
+        jobDto.setJobId(UUID.randomUUID());
+        jobDto.setUserId(UUID.fromString(userId));
+        jobDto.setCreatedTime(Instant.now());
+        Job job = Mapper.mapToJobEntity(jobDto);
+         return  Mapper.mapToJobDto(jobRepository.save(job));
+    }
+    // Method to retrieve a job by user ID and job ID
+    public JobDto getJob(String userId, String jobId) {
+        Job job = jobRepository.findByUserIdAndJobId(UUID.fromString(userId), UUID.fromString(jobId));
+        if (job == null) {
+            throw new ResourceNotFoundException("Job","userId","jobId",userId,jobId);
+        }
+        return Mapper.mapToJobDto(job);
+    }
+/*
+    // Method to update an existing job (you can add more logic to update specific fields)
+    //@Override
+    public JobDto updateJob(UUID jobId, String jobDetail, boolean isRecurring, String interval, int maxRetryCount) {
+        // Retrieve the job entity from Cassandra
+        Job job = jobRepository.findByJobId(jobId);
+
+        if (job == null) {
+            throw new JobNotFoundException("Job not found for the provided jobId.");
+        }
+
+        // Update job details
+        job.setJobDetail(jobDetail);
+        job.setIsRecurring(isRecurring);
+        job.setInterval(interval);
+        job.setMaxRetryCount(maxRetryCount);
+        job.setCreatedTime(Instant.now());  // Optionally update the creation timestamp
+
+        // Save the updated job entity back to Cassandra
+        jobRepository.save(job);
+
+        // Map the updated Job entity to JobDto
+        return Mapper.mapToJobDto(job);
+    }
+
+    // Method to delete a job by jobId
+    public void deleteJob(UUID jobId) {
+        Job job = jobRepository.findByJobId(jobId);
+
+        if (job == null) {
+            throw new JobNotFoundException("Job not found for the provided jobId.");
+        }
+
+        // Delete the job from Cassandra
+        jobRepository.delete(job);
+    }
+    */
+
 }

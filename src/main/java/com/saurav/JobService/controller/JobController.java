@@ -19,7 +19,7 @@ public class JobController {
     }
 
     @GetMapping("/{user_id}/jobs")
-    public ResponseEntity<JobDto> createJob(@PathVariable Long user_id, @RequestBody JobDto jobDto) {
-        return ResponseEntity.status(HttpStatus.OK).body(jobService.createJob());
+    public ResponseEntity<JobDto> createJob(@PathVariable String user_id, @RequestBody JobDto jobDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(jobService.createJob(user_id,jobDto));
     }
 }

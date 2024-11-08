@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/jobservice")
 public class JobController {
 
     private final JobService jobService;
@@ -18,8 +18,27 @@ public class JobController {
         this.jobService = jobService;
     }
 
-    @GetMapping("/{user_id}/jobs")
+    @GetMapping("/{user_id}")
     public ResponseEntity<JobDto> createJob(@PathVariable String user_id, @RequestBody JobDto jobDto) {
         return ResponseEntity.status(HttpStatus.OK).body(jobService.createJob(user_id,jobDto));
     }
+    @GetMapping("/{user_id}/{job_id}")
+    public ResponseEntity<JobDto> getJob(@PathVariable String user_id, @PathVariable String job_id) {
+        return ResponseEntity.status(HttpStatus.OK).body(jobService.getJob(user_id,job_id));
+    }
+    @PutMapping("/{user_id}/{job_id}")
+    public ResponseEntity<JobDto> updateJob(
+            @PathVariable String user_id,
+            @PathVariable String job_id,
+            @RequestBody JobDto jobDto) {
+        JobDto updatedJob = jobService.updateJob(user_id, job_id, jobDto);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedJob);
+    }
+    @DeleteMapping("/{user_id}/{job_id}")
+    public ResponseEntity<Void> deleteJob(@PathVariable String user_id, @PathVariable String job_id) {
+        jobService.deleteJob(user_id, job_id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+
 }

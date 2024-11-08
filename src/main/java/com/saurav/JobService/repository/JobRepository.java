@@ -11,4 +11,5 @@ import java.util.UUID;
 public interface JobRepository extends CassandraRepository<Job, UUID> {
     Job findByUserIdAndJobId(UUID userId, UUID jobId);
     Job findByJobId(UUID jobId);
+    void deleteByUserIdAndJobId(UUID userId, UUID jobId);
 }

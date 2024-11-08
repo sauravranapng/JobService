@@ -19,8 +19,8 @@ public class JobServiceImpl implements JobService {
         this.jobRepository = jobRepository;
     }
     // Method to create a new job
+    @Override
     public JobDto createJob(String userId, JobDto jobDto) {
-
         jobDto.setJobId(UUID.randomUUID());
         jobDto.setUserId(UUID.fromString(userId));
         jobDto.setCreatedTime(Instant.now());
@@ -28,6 +28,7 @@ public class JobServiceImpl implements JobService {
          return  Mapper.mapToJobDto(jobRepository.save(job));
     }
     // Method to retrieve a job by user ID and job ID
+    @Override
     public JobDto getJob(String userId, String jobId) {
         Job job = jobRepository.findByUserIdAndJobId(UUID.fromString(userId), UUID.fromString(jobId));
         if (job == null) {
@@ -35,42 +36,19 @@ public class JobServiceImpl implements JobService {
         }
         return Mapper.mapToJobDto(job);
     }
-/*
     // Method to update an existing job (you can add more logic to update specific fields)
-    //@Override
-    public JobDto updateJob(UUID jobId, String jobDetail, boolean isRecurring, String interval, int maxRetryCount) {
-        // Retrieve the job entity from Cassandra
-        Job job = jobRepository.findByJobId(jobId);
-
-        if (job == null) {
-            throw new JobNotFoundException("Job not found for the provided jobId.");
-        }
-
-        // Update job details
-        job.setJobDetail(jobDetail);
-        job.setIsRecurring(isRecurring);
-        job.setInterval(interval);
-        job.setMaxRetryCount(maxRetryCount);
-        job.setCreatedTime(Instant.now());  // Optionally update the creation timestamp
-
-        // Save the updated job entity back to Cassandra
-        jobRepository.save(job);
-
-        // Map the updated Job entity to JobDto
-        return Mapper.mapToJobDto(job);
+    @Override
+    public JobDto updateJob( String userId ,String jobId,JobDto jobDto) {
+        jobDto.setJobId(UUID.fromString(jobId));
+        jobDto.setUserId(UUID.fromString(userId));
+        jobDto.setCreatedTime(Instant.now());
+        Job job = Mapper.mapToJobEntity(jobDto);
+        return  Mapper.mapToJobDto(jobRepository.save(job));
+    }
+    @Override
+    public void deleteJob(String  jobId ,String userId) {
+        jobRepository.deleteByUserIdAndJobId(UUID.fromString(userId),UUID.fromString(jobId));
     }
 
-    // Method to delete a job by jobId
-    public void deleteJob(UUID jobId) {
-        Job job = jobRepository.findByJobId(jobId);
-
-        if (job == null) {
-            throw new JobNotFoundException("Job not found for the provided jobId.");
-        }
-
-        // Delete the job from Cassandra
-        jobRepository.delete(job);
-    }
-    */
 
 }

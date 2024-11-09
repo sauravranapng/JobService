@@ -1,5 +1,4 @@
 package com.saurav.JobService.service.impl;
-
 import com.saurav.JobService.dto.JobDto;
 import com.saurav.JobService.entity.Job;
 import com.saurav.JobService.exception.ResourceNotFoundException;
@@ -15,9 +14,11 @@ import java.util.UUID;
 public class JobServiceImpl implements JobService {
     private final JobRepository jobRepository;  // Assuming you have a repository to interact with Cassandra
     // Constructor
+
     public JobServiceImpl(JobRepository jobRepository) {
         this.jobRepository = jobRepository;
     }
+
     // Method to create a new job
     @Override
     public JobDto createJob(String userId, JobDto jobDto) {

@@ -1,6 +1,7 @@
 package com.saurav.JobService.controller;
 import com.saurav.JobService.dto.JobDto;
 import com.saurav.JobService.service.JobService;
+import com.saurav.JobService.service.impl.JobServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -17,8 +18,7 @@ public class JobController {
     public JobController(JobService jobService) {
         this.jobService = jobService;
     }
-
-    @GetMapping("/{user_id}")
+   @PostMapping("/{user_id}")
     public ResponseEntity<JobDto> createJob(@PathVariable String user_id, @RequestBody JobDto jobDto) {
         return ResponseEntity.status(HttpStatus.OK).body(jobService.createJob(user_id,jobDto));
     }

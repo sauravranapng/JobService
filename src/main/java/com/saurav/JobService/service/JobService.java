@@ -8,5 +8,7 @@ public interface JobService {
     JobDto getJob(String userId, String jobId);
     JobDto updateJob( String userId ,String jobId,JobDto jobDto);
     void deleteJob(String  userId ,String jobId);
+
+
 }
 

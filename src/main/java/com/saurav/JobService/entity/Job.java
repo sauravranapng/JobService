@@ -1,4 +1,5 @@
 package com.saurav.JobService.entity;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Table("job_table")
 public class Job {
+
         @PrimaryKeyColumn(name = "user_id", type = PrimaryKeyType.PARTITIONED, ordinal = 0)
         private UUID userId;
 
@@ -26,34 +28,14 @@ public class Job {
 
         private boolean isRecurring;
 
-        @CassandraType(type= CassandraType.Name.TEXT)
+        @CassandraType(type = CassandraType.Name.TEXT)
         private String interval;
 
         private int maxRetryCount;
 
-        private Instant createdTime;
+        @Column("createdtime")
+        @CassandraType(type = CassandraType.Name.TIMESTAMP)
+        private Instant createdTime; // Use TIMESTAMP for Instant
 
-  /*
-    @PrimaryKeyColumn(name = "job_id", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
-    private UUID jobId;
 
-    @PrimaryKeyColumn(name = "execution_time", ordinal = 1, type = PrimaryKeyType.CLUSTERED)
-    private Instant executionTime;
-
-    @Column("status")
-    @CassandraType(type= CassandraType.Name.TEXT)
-    private String status;
-
-    @Column("retry_count")
-    private int retryCount;
-
-    @Column("last_update_time")
-    private Instant lastUpdateTime;
-
-    @Column("description")
-    @CassandraType(type= CassandraType.Name.TEXT)
-    private String description;
-
-    // Constructors, getters, and setters
-*/
 }

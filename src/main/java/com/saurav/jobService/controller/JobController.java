@@ -1,7 +1,6 @@
-package com.saurav.JobService.controller;
-import com.saurav.JobService.dto.JobDto;
-import com.saurav.JobService.service.JobService;
-import com.saurav.JobService.service.impl.JobServiceImpl;
+package com.saurav.jobService.controller;
+import com.saurav.jobService.dto.JobDto;
+import com.saurav.jobService.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;

@@ -1,9 +1,9 @@
-package com.saurav.JobService.util;
+package com.saurav.jobService.util;
 
 
-import com.saurav.JobService.JobServiceApplication;
-import com.saurav.JobService.dto.JobDto;
-import com.saurav.JobService.entity.Job;
+import com.saurav.jobService.JobServiceApplication;
+import com.saurav.jobService.dto.JobDto;
+import com.saurav.jobService.entity.Job;
 
 public class Mapper {
     // map the job entity to job dto
@@ -13,6 +13,7 @@ public class Mapper {
 
     // map the user entity to user dto
     public static Job mapToJobEntity(JobDto jobDto) {
+
         return JobServiceApplication.modelMapper().map(jobDto, Job.class);
     }
 

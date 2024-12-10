@@ -1,6 +1,6 @@
-package com.saurav.JobService.exception;
+package com.saurav.jobService.exception;
 
-import com.saurav.JobService.dto.ErrorResponse;
+import com.saurav.jobService.dto.ErrorResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;

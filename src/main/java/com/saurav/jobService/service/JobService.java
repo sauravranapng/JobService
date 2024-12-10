@@ -1,6 +1,6 @@
-package com.saurav.JobService.service;
+package com.saurav.jobService.service;
 
-import com.saurav.JobService.dto.JobDto;
+import com.saurav.jobService.dto.JobDto;
 
 
 public interface JobService {

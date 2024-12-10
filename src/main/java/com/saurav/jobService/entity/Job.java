@@ -1,14 +1,12 @@
-package com.saurav.JobService.entity;
+package com.saurav.jobService.entity;
 
+import com.saurav.jobService.util.JobPrimaryKey;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
-import org.springframework.data.cassandra.core.mapping.CassandraType;
-import org.springframework.data.cassandra.core.mapping.Column;
-import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
-import org.springframework.data.cassandra.core.mapping.Table;
+import org.springframework.data.cassandra.core.mapping.*;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -20,13 +18,14 @@ import java.util.UUID;
 @Table("job_table")
 public class Job {
 
-        @PrimaryKeyColumn(name = "user_id", type = PrimaryKeyType.PARTITIONED, ordinal = 0)
-        private UUID userId;
+        @PrimaryKey
+        private JobPrimaryKey jobPrimaryKey;
 
-        @PrimaryKeyColumn(name = "job_id", type = PrimaryKeyType.CLUSTERED, ordinal = 1)
-        private UUID jobId;
 
-        private boolean isRecurring;
+        private boolean recurring;
+
+        @CassandraType(type = CassandraType.Name.TEXT)
+        private  String description;
 
         @CassandraType(type = CassandraType.Name.TEXT)
         private String interval;
@@ -36,6 +35,5 @@ public class Job {
         @Column("createdtime")
         @CassandraType(type = CassandraType.Name.TIMESTAMP)
         private Instant createdTime; // Use TIMESTAMP for Instant
-
 
 }

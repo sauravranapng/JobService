@@ -1,4 +1,4 @@
-package com.saurav.JobService.exception;
+package com.saurav.jobService.exception;
 
 import lombok.Getter;
 /*

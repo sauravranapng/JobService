@@ -1,4 +1,4 @@
-package com.saurav.JobService.config;
+package com.saurav.jobService.config;
 
 import com.datastax.oss.driver.api.core.CqlSession;
 import org.slf4j.Logger;
@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.cassandra.core.CassandraTemplate;
-import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
 
 import java.io.File;
 import java.nio.file.Path;

@@ -2,16 +2,13 @@ package com.saurav.jobService.dto;
 
 import com.saurav.jobService.util.JobDtoPrimaryKey;
 import com.saurav.jobService.util.JobPrimaryKey;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import java.time.Instant;
 import java.util.UUID;
 
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class JobDto {

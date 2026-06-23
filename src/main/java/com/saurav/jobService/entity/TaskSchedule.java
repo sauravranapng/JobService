@@ -2,20 +2,25 @@ package com.saurav.jobService.entity;
 
 import com.saurav.jobService.util.TaskSchedulePrimaryKey;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.data.cassandra.core.mapping.*;
+import org.springframework.data.cassandra.core.mapping.Column;
+import org.springframework.data.cassandra.core.mapping.PrimaryKey;
+import org.springframework.data.cassandra.core.mapping.Table;
 
-@Setter
-@Getter
+
+import java.util.UUID;
+
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table("task_schedule")
 public class TaskSchedule{
 
-    // Getters and Setters
     @PrimaryKey
     private TaskSchedulePrimaryKey key;
+
+    @Column("user_id")
+    private UUID userId;
 
 }

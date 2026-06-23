@@ -18,6 +18,9 @@ import java.time.ZoneOffset;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.saurav.jobService.util.JobServiceUtil.calculateSegment;
+import static com.saurav.jobService.util.Mapper.mapToJobEntity;
+
 @Service
 public class JobServiceImpl implements JobService {
     private final JobRepository jobRepository;
@@ -28,28 +31,43 @@ public class JobServiceImpl implements JobService {
         this.taskScheduleRepository=taskScheduleRepository;
     }
 
-    // Method to create a new job
+    /*
+        * Method to create a new job for a user. It generates a unique job ID, sets the user ID,
+        *  and saves the job to the database. Additionally, it calculates the next execution time
+        * based on the job's interval and creates a corresponding task schedule entry.
+     */
     @Override
     public JobDto createJob(String userId, JobDto jobDto) {
+
         jobDto.getJobDtoPrimaryKey().setJobId(UUID.randomUUID());
         jobDto.getJobDtoPrimaryKey().setUserId(UUID.fromString(userId));
         jobDto.setCreatedTime(Instant.now());
-        Job job = Mapper.mapToJobEntity(jobDto);
+
+        Job job = mapToJobEntity(jobDto);
 
         long nextExecutionTime = LocalDateTime.now()
                 .plus(Duration.parse(job.getInterval()))
                 .atZone(ZoneOffset.systemDefault())
                 .toInstant()
                 .getEpochSecond() / 60;
-        int segment = ThreadLocalRandom.current().nextInt(1, 4);
-        TaskSchedulePrimaryKey taskSchedulePrimaryKey = new TaskSchedulePrimaryKey(nextExecutionTime, segment, job.getJobPrimaryKey().getJobId());
-        TaskSchedule taskSchedule = new TaskSchedule(taskSchedulePrimaryKey);
+
+        int segment = calculateSegment(job.getJobPrimaryKey().getJobId());
+
+        TaskSchedulePrimaryKey taskSchedulePrimaryKey =
+                new TaskSchedulePrimaryKey(
+                        nextExecutionTime,
+                        segment,
+                        job.getJobPrimaryKey().getJobId());
+
+        TaskSchedule taskSchedule = new TaskSchedule();
+        taskSchedule.setKey(taskSchedulePrimaryKey);
+        taskSchedule.setUserId(job.getJobPrimaryKey().getUserId());
 
         taskScheduleRepository.save(taskSchedule);
 
-        return  Mapper.mapToJobDto(jobRepository.save(job));
-
+        return Mapper.mapToJobDto(jobRepository.save(job));
     }
+
     // Method to retrieve a job by user ID and job ID
     @Override
     public JobDto getJob(String userId, String jobId) {
@@ -65,7 +83,7 @@ public class JobServiceImpl implements JobService {
         jobDto.getJobDtoPrimaryKey().setJobId(UUID.fromString(jobId));
         jobDto.getJobDtoPrimaryKey().setUserId(UUID.fromString(userId));
         jobDto.setCreatedTime(Instant.now());
-        Job job = Mapper.mapToJobEntity(jobDto);
+        Job job = mapToJobEntity(jobDto);
         return  Mapper.mapToJobDto(jobRepository.save(job));
     }
     @Override

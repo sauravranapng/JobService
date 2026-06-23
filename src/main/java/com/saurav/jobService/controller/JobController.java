@@ -17,14 +17,17 @@ public class JobController {
     public JobController(JobService jobService) {
         this.jobService = jobService;
     }
+
    @PostMapping("/{user_id}")
     public ResponseEntity<JobDto> createJob(@PathVariable String user_id, @RequestBody JobDto jobDto) {
         return ResponseEntity.status(HttpStatus.OK).body(jobService.createJob(user_id,jobDto));
     }
+
     @GetMapping("/{user_id}/{job_id}")
     public ResponseEntity<JobDto> getJob(@PathVariable String user_id, @PathVariable String job_id) {
         return ResponseEntity.status(HttpStatus.OK).body(jobService.getJob(user_id,job_id));
     }
+
     @PutMapping("/{user_id}/{job_id}")
     public ResponseEntity<JobDto> updateJob(
             @PathVariable String user_id,
@@ -33,6 +36,7 @@ public class JobController {
         JobDto updatedJob = jobService.updateJob(user_id, job_id, jobDto);
         return ResponseEntity.status(HttpStatus.OK).body(updatedJob);
     }
+
     @DeleteMapping("/{user_id}/{job_id}")
     public ResponseEntity<Void> deleteJob(@PathVariable String user_id, @PathVariable String job_id) {
         jobService.deleteJob(user_id, job_id);

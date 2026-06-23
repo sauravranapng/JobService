@@ -1,18 +1,12 @@
 package com.saurav.jobService.entity;
 
 import com.saurav.jobService.util.JobPrimaryKey;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
+import lombok.*;
 import org.springframework.data.cassandra.core.mapping.*;
 
 import java.time.Instant;
-import java.util.UUID;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table("job_table")

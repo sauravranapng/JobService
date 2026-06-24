@@ -1,0 +1,10 @@
+spring:
+  cassandra:
+    keyspace-name: distributed_scheduler
+    username: <your_astra_client_id>
+    password: <your_astra_client_secret>
+    schema-action: none
+
+datastax:
+  astra:
+    secure-connect-bundle: classpath:astra/secure-connect-yourdb.zip

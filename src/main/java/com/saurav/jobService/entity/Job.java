@@ -24,9 +24,10 @@ public class Job {
         @CassandraType(type = CassandraType.Name.TEXT)
         private String interval;
 
+        @Column("max_retry_count")
         private int maxRetryCount;
 
-        @Column("createdtime")
+        @Column("created_time")
         @CassandraType(type = CassandraType.Name.TIMESTAMP)
         private Instant createdTime; // Use TIMESTAMP for Instant
 

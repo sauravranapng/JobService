@@ -1,11 +1,9 @@
-package com.saurav.jobService.dto;
+package com.saurav.jobservice.dto;
 
-import com.saurav.jobService.util.JobDtoPrimaryKey;
-import com.saurav.jobService.util.JobPrimaryKey;
+import com.saurav.jobservice.util.JobDtoPrimaryKey;
 import lombok.*;
 
 import java.time.Instant;
-import java.util.UUID;
 
 
 @Data

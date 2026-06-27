@@ -1,4 +1,4 @@
-package com.saurav.jobService.exception;
+package com.saurav.jobservice.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

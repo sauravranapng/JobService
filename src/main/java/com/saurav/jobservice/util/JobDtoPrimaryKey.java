@@ -1,11 +1,9 @@
-package com.saurav.jobService.util;
+package com.saurav.jobservice.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
-import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 
 import java.util.UUID;
 

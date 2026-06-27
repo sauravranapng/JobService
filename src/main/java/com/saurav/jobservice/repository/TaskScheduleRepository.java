@@ -1,7 +1,7 @@
-package com.saurav.jobService.repository;
+package com.saurav.jobservice.repository;
 
-import com.saurav.jobService.entity.TaskSchedule;
-import com.saurav.jobService.util.TaskSchedulePrimaryKey;
+import com.saurav.jobservice.entity.TaskSchedule;
+import com.saurav.jobservice.util.TaskSchedulePrimaryKey;
 import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.stereotype.Repository;
 

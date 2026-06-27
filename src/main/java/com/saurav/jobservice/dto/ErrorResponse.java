@@ -1,4 +1,4 @@
-package com.saurav.jobService.dto;
+package com.saurav.jobservice.dto;
 
 
 import lombok.Getter;

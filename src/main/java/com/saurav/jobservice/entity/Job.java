@@ -1,6 +1,6 @@
-package com.saurav.jobService.entity;
+package com.saurav.jobservice.entity;
 
-import com.saurav.jobService.util.JobPrimaryKey;
+import com.saurav.jobservice.util.JobPrimaryKey;
 import lombok.*;
 import org.springframework.data.cassandra.core.mapping.*;
 

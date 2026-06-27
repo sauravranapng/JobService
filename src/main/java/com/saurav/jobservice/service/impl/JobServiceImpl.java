@@ -1,32 +1,34 @@
-package com.saurav.jobService.service.impl;
-import com.saurav.jobService.dto.JobDto;
-import com.saurav.jobService.entity.Job;
-import com.saurav.jobService.entity.TaskSchedule;
-import com.saurav.jobService.exception.ResourceNotFoundException;
-import com.saurav.jobService.repository.JobRepository;
-import com.saurav.jobService.repository.TaskScheduleRepository;
-import com.saurav.jobService.service.JobService;
-import com.saurav.jobService.util.JobPrimaryKey;
-import com.saurav.jobService.util.Mapper;
-import com.saurav.jobService.util.TaskSchedulePrimaryKey;
+package com.saurav.jobservice.service.impl;
+import com.saurav.jobservice.dto.JobDto;
+import com.saurav.jobservice.entity.Job;
+import com.saurav.jobservice.entity.TaskSchedule;
+import com.saurav.jobservice.exception.ResourceNotFoundException;
+import com.saurav.jobservice.mapper.JobMapper;
+import com.saurav.jobservice.repository.JobRepository;
+import com.saurav.jobservice.repository.TaskScheduleRepository;
+import com.saurav.jobservice.service.JobService;
+import com.saurav.jobservice.util.JobDtoPrimaryKey;
+import com.saurav.jobservice.util.JobPrimaryKey;
+import com.saurav.jobservice.util.TaskSchedulePrimaryKey;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
-import static com.saurav.jobService.util.JobServiceUtil.calculateSegment;
-import static com.saurav.jobService.util.Mapper.mapToJobEntity;
+import static com.saurav.jobservice.util.JobServiceUtil.calculateSegment;
 
 @Service
 public class JobServiceImpl implements JobService {
+    private final JobMapper jobMapper;
     private final JobRepository jobRepository;
-    private final TaskScheduleRepository taskScheduleRepository;// Assuming you have a repository to interact with Cassandra
-    // Constructor
-    public JobServiceImpl(JobRepository jobRepository ,TaskScheduleRepository taskScheduleRepository) {
+    private final TaskScheduleRepository taskScheduleRepository;
+
+    public JobServiceImpl(JobMapper jobMapper, JobRepository jobRepository , TaskScheduleRepository taskScheduleRepository) {
+        this.jobMapper = jobMapper;
         this.jobRepository = jobRepository;
         this.taskScheduleRepository=taskScheduleRepository;
     }
@@ -39,11 +41,13 @@ public class JobServiceImpl implements JobService {
     @Override
     public JobDto createJob(String userId, JobDto jobDto) {
 
-        jobDto.getJobDtoPrimaryKey().setJobId(UUID.randomUUID());
-        jobDto.getJobDtoPrimaryKey().setUserId(UUID.fromString(userId));
+        JobDtoPrimaryKey primaryKey = new JobDtoPrimaryKey();
+        primaryKey.setJobId(UUID.randomUUID());
+        primaryKey.setUserId(UUID.fromString(userId));
+        jobDto.setJobDtoPrimaryKey(primaryKey);
         jobDto.setCreatedTime(Instant.now());
 
-        Job job = mapToJobEntity(jobDto);
+        Job job = jobMapper.toEntity(jobDto);
 
         long nextExecutionTime = LocalDateTime.now()
                 .plus(Duration.parse(job.getInterval()))
@@ -65,7 +69,7 @@ public class JobServiceImpl implements JobService {
 
         taskScheduleRepository.save(taskSchedule);
 
-        return Mapper.mapToJobDto(jobRepository.save(job));
+        return jobMapper.toDto(jobRepository.save(job));
     }
 
     // Method to retrieve a job by user ID and job ID
@@ -75,7 +79,7 @@ public class JobServiceImpl implements JobService {
         if (job == null) {
             throw new ResourceNotFoundException("Job","userId","jobId",userId,jobId);
         }
-        return Mapper.mapToJobDto(job);
+        return jobMapper.toDto(job);
     }
     // Method to update an existing job (you can add more logic to update specific fields)
     @Override
@@ -83,13 +87,22 @@ public class JobServiceImpl implements JobService {
         jobDto.getJobDtoPrimaryKey().setJobId(UUID.fromString(jobId));
         jobDto.getJobDtoPrimaryKey().setUserId(UUID.fromString(userId));
         jobDto.setCreatedTime(Instant.now());
-        Job job = mapToJobEntity(jobDto);
-        return  Mapper.mapToJobDto(jobRepository.save(job));
+        Job job = jobMapper.toEntity(jobDto);
+        return  jobMapper.toDto(jobRepository.save(job));
     }
+
     @Override
     public void deleteJob(String  userId ,String jobId) {
         jobRepository.deleteByJobPrimaryKey(new JobPrimaryKey(UUID.fromString(userId), UUID.fromString(jobId)));
     }
 
+    @Override
+    public List<JobDto> getJobsByUser(UUID userId) {
 
+        List<Job> jobs = jobRepository.findByJobPrimaryKeyUserId(userId);
+
+        return jobs.stream()
+                .map(jobMapper::toDto)
+                .toList();
+    }
 }

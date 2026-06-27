@@ -1,6 +1,6 @@
-package com.saurav.jobService.entity;
+package com.saurav.jobservice.entity;
 
-import com.saurav.jobService.util.TaskSchedulePrimaryKey;
+import com.saurav.jobservice.util.TaskSchedulePrimaryKey;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

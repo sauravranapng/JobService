@@ -1,8 +1,8 @@
-package com.saurav.jobService.util;
+package com.saurav.jobservice.util;
 
 import java.util.UUID;
 
-import static com.saurav.jobService.util.Constants.TOTAL_SEGMENTS;
+import static com.saurav.jobservice.util.Constants.TOTAL_SEGMENTS;
 
 public class JobServiceUtil {
     private JobServiceUtil(){

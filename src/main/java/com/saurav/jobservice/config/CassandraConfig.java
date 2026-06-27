@@ -1,4 +1,4 @@
-package com.saurav.jobService.config;
+package com.saurav.jobservice.config;
 
 import com.datastax.oss.driver.api.core.CqlSession;
 import org.slf4j.Logger;

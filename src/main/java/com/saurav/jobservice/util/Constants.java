@@ -1,4 +1,4 @@
-package com.saurav.jobService.util;
+package com.saurav.jobservice.util;
 
 public class Constants {
     private Constants() {

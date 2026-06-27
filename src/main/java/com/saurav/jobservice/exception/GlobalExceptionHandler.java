@@ -1,6 +1,7 @@
-package com.saurav.jobService.exception;
+package com.saurav.jobservice.exception;
 
-import com.saurav.jobService.dto.ErrorResponse;
+import com.saurav.jobservice.dto.ErrorResponse;
+import jakarta.annotation.Nonnull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -57,9 +58,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex,
-            HttpHeaders headers,
-            HttpStatusCode status,
-            WebRequest request
+            @Nonnull HttpHeaders headers,
+            @Nonnull HttpStatusCode status,
+            @Nonnull WebRequest request
     ) {
         Map<String,String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach(
@@ -69,6 +70,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                     errors.put(field,message);
                 }
         );
-        return new ResponseEntity(errors,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errors,HttpStatus.BAD_REQUEST);
     }
 }

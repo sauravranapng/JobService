@@ -1,4 +1,4 @@
-package com.saurav.jobService.mapper;
+package com.saurav.jobservice.mapper;
 
 public class TaskScheduleMapper {
 }

@@ -23,4 +23,8 @@ public class TaskSchedule{
     @Column("user_id")
     private UUID userId;
 
+    private boolean recurring;
+
+    private String interval;
+
 }

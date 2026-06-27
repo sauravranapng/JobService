@@ -4,6 +4,7 @@ import com.saurav.jobservice.entity.Job;
 import com.saurav.jobservice.entity.TaskSchedule;
 import com.saurav.jobservice.exception.ResourceNotFoundException;
 import com.saurav.jobservice.mapper.JobMapper;
+import com.saurav.jobservice.mapper.TaskScheduleMapper;
 import com.saurav.jobservice.repository.JobRepository;
 import com.saurav.jobservice.repository.TaskScheduleRepository;
 import com.saurav.jobservice.service.JobService;
@@ -24,11 +25,13 @@ import static com.saurav.jobservice.util.JobServiceUtil.calculateSegment;
 @Service
 public class JobServiceImpl implements JobService {
     private final JobMapper jobMapper;
+    private final TaskScheduleMapper taskScheduleMapper;
     private final JobRepository jobRepository;
     private final TaskScheduleRepository taskScheduleRepository;
 
-    public JobServiceImpl(JobMapper jobMapper, JobRepository jobRepository , TaskScheduleRepository taskScheduleRepository) {
+    public JobServiceImpl(JobMapper jobMapper, TaskScheduleMapper taskScheduleMapper, JobRepository jobRepository , TaskScheduleRepository taskScheduleRepository) {
         this.jobMapper = jobMapper;
+        this.taskScheduleMapper = taskScheduleMapper;
         this.jobRepository = jobRepository;
         this.taskScheduleRepository=taskScheduleRepository;
     }
@@ -57,15 +60,11 @@ public class JobServiceImpl implements JobService {
 
         int segment = calculateSegment(job.getJobPrimaryKey().getJobId());
 
-        TaskSchedulePrimaryKey taskSchedulePrimaryKey =
-                new TaskSchedulePrimaryKey(
-                        nextExecutionTime,
-                        segment,
-                        job.getJobPrimaryKey().getJobId());
-
-        TaskSchedule taskSchedule = new TaskSchedule();
-        taskSchedule.setKey(taskSchedulePrimaryKey);
-        taskSchedule.setUserId(job.getJobPrimaryKey().getUserId());
+        TaskSchedule taskSchedule = taskScheduleMapper.toTaskSchedule(
+                job,
+                nextExecutionTime,
+                segment
+        );
 
         taskScheduleRepository.save(taskSchedule);
 

@@ -12,6 +12,6 @@ public class JobServiceUtil {
      This method calculates the segment number for a given jobId.
      */
     public static int calculateSegment(UUID jobId) {
-        return Math.abs(jobId.hashCode()) % TOTAL_SEGMENTS;
+        return Math.floorMod(jobId.hashCode(), TOTAL_SEGMENTS);
     }
 }
